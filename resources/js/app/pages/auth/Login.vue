@@ -5,42 +5,25 @@
         <div class="card">
           <div class="card-header">Login</div>
           <div class="card-body">
-            <form method="POST" action="http://l.loc/login" @submit="checkForm">
-              <input type="hidden" name="_token" value="gSKLdYLsBr4HOzjr1cZKoeYuAjdJ395GOrjAwOZu" />
-              <div class="form-group row">
-                <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-                <div class="col-md-6">
-                  <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    value
-                    required="required"
-                    autocomplete="email"
-                    autofocus="autofocus"
-                    class="form-control"
-                    v-model.trim="form.email"
-                  />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-                <div class="col-md-6">
-                  <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    required="required"
-                    autocomplete="current-password"
-                    class="form-control"
-                    v-model="form.password"
-                    :class="{'is-invalid': errors.password}"
-                  />
-                  <span v-show="errors.password" role="alert" class="invalid-feedback">
-                    <strong>{{errors.password}}</strong>
-                  </span>
-                </div>
-              </div>
+            <form method="POST" action="/login" @submit="checkForm">
+
+              <strong v-show="error" style="color:red">{{error}}</strong>
+              
+              <s-input v-model.trim="form.email" 
+              label="E-Mail Address" 
+              name="email" 
+              type="email" 
+              :autofocus="true"
+              autocomplete="email"
+              :error="errors.email"
+              />
+
+              <s-input v-model="form.password"
+              label="Password" 
+              name="password" 
+              type="password"
+              :error="errors.password"
+              />
               <div class="form-group row">
                 <div class="col-md-6 offset-md-4">
                   <div class="form-check">
@@ -52,7 +35,10 @@
               <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4">
                   <button type="submit" class="btn btn-primary">Login</button>
-                  <router-link :to="{name:'resetPassword'}"  class="btn btn-link">Forgot Your Password?</router-link>
+                  <router-link
+                    :to="{name:'resetPassword'}"
+                    class="btn btn-link"
+                  >Forgot Your Password?</router-link>
                 </div>
               </div>
             </form>
@@ -64,41 +50,42 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex"
+import SInput from "./components/Input"
+import User from "../../models/Users"
+
+let user = new User
 
 export default {
-    methods: {
-        ...mapActions({
-            login: 'auth/login',
-        }),
-        checkForm(e){
-            e.preventDefault()
-            this.errors = {}
+  components: {
+    SInput
+  },
+  methods: {
+    ...mapActions({
+      login: "auth/login",
+    }),
+    checkForm(e) {
+      e.preventDefault()
 
-            if(this.form.password.length < 3){
-                this.errors.password = 'Password length must be more 2'
-            }else{
-              this.login(this.form).then((error) => {
-                if(error.status == 200){
-                    this.$router.push({name: 'index'});
-                }else{
-                    this.error = error.status;
-                }
-              });
-            }
-        }
-    },
-    data(){
-        return {
-            form: {
-                email: '',
-                password: ''
-            },
-            errors: {
-                login: false,
-                password: false
-            }
-        }
+      if(user.load(this.form).validateLogin()){
+        this.login(user.getForm()).then((response) => {
+          if (response.status == 200) {
+            this.$router.push({ name: "index" })
+          } else {
+            this.error = response.data.error
+          }
+        })
+      }else{
+        this.errors = user.getErrors()
+      }
     }
+  },
+  data() {
+    return {
+      form: user.getAttrs(),
+      errors: user.getAttrs(),
+      error: false
+    };
+  },
 };
 </script>
