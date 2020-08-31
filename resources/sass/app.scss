@@ -1,0 +1,42 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.svg-country{
+    cursor: pointer;
+    stroke-opacity: 0.5;
+    stroke-width: 1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill-opacity: 1;
+    fill-rule: evenodd;
+}
+
+.country-visited{
+    stroke: rgb(85, 85, 85);
+    fill: rgb(139, 187, 74);
+}
+
+.country-without-action{
+    stroke: rgb(85, 85, 85);
+    fill: rgb(255, 255, 255);
+}
+
+.country-on-over{
+    stroke: rgb(85, 85, 85);
+    stroke-opacity: 0.1;
+    stroke-width: 2;
+    fill: rgb(217, 96, 96);
+}
+
+.country-on-over-visited{
+    stroke: rgb(85, 85, 85);
+    stroke-opacity: 0.1;
+    stroke-width: 2;
+    fill: rgb(197, 236, 21)
+}
