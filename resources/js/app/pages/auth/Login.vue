@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header">Login</div>
+          <div class="card-header">{{$t('login')}}</div>
           <div class="card-body">
             <form method="POST" action="/login" @submit="checkForm">
 
@@ -28,7 +28,7 @@
                 <div class="col-md-6 offset-md-4">
                   <div class="form-check">
                     <input type="checkbox" name="remember" id="remember" class="form-check-input" />
-                    <label for="remember" class="form-check-label">Remember Me</label>
+                    <label for="remember" class="form-check-label">{{$t("Remember Me")}}</label>
                   </div>
                 </div>
               </div>

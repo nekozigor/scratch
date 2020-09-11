@@ -1,12 +1,6 @@
 import router from "./app/routes"
-import localforage from 'localforage';
 import store from './app/vuex'
-
-window.localforage = localforage
-localforage.config({
-    driver: localforage.LOCALSTORAGE,
-    storeName: 'scratch'
-});
+import i18n from './locale/i18n'
 
 window.Vue = require('vue')
 
@@ -15,12 +9,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 Vue.component('app', require('./app/layout/App.vue').default)
 
-localforage.getItem('authtoken').then((token) => {
-    store.commit('auth/setToken', token)
+store.commit('auth/checkToken')
 
-    new Vue({
-        el: '#app',
-        router,
-        store,
-    })
+new Vue({
+    i18n,
+    el: '#app',
+    router,
+    store,
 })

@@ -1,0 +1,37 @@
+<script>
+let newArray = []
+//let sortMatrix = [1,1,1,1,1,2,2,2,3]
+
+let sortMatrix = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+const x = Math.sqrt(sortMatrix.length)
+// [
+//     1,1,1
+//     1,2,2
+//     1,2,3
+// ]
+
+function xs(x, y, value){
+    if(typeof newArray[y] == 'undefined'){
+        newArray[y] = []
+    }
+    newArray[y][x] = value
+}
+
+let counterX = -1
+let xc = 0
+for(var counter in sortMatrix){
+    counterX++
+    if(counterX + 1 == 2 * (x - xc)){
+        xc++
+        counterX = 0
+    }
+    
+    if(counterX < (x - xc)){
+        xs(counterX + xc, xc, sortMatrix[counter])
+    } else {
+        xs(xc , counterX - x + (2 * xc) + 1, sortMatrix[counter])
+    }
+}
+
+console.log(newArray);
+</script>

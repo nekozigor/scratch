@@ -75,11 +75,17 @@ export default {
     checkForm(e) {
       e.preventDefault();
       if(user.load(this.form).validateRegister()) {
-        this.signUp(user.getForm()).then((error) => {
-          if (error.status == 200) {
+        this.signUp(user.getForm()).then((response) => {
+          if (response.status == 200) {
             this.$router.push({ name: "index" })
-          } else {
-            this.error = error.data.error
+          } else if(response.status == 422){
+            this.error = response.data.message
+            for(let x in response.data.errors){
+              this.errors[x] = response.data.errors[x][0]
+            }
+          }
+          else {
+            this.error = (typeof response.data.error != 'undefined') ? response.data.error : 'Server error'
           }
         })
       }else{

@@ -2,7 +2,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Registration;
 use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -38,21 +40,9 @@ class AuthController extends Controller
     /**
      * User registration
      */
-    public function registration()
+    public function registration(Registration $request)
     {
-        $name = request('name');
-        $email = request('email');
-        $password = request('password');
-
-        if(User::where('email', $email)->first()){
-            return response()->json(['error' => 'This email was registered'], 400);
-        }
-
-        $user = new User();
-        $user->name = $name;
-        $user->email = $email;
-        $user->password = Hash::make($password);
-        $user->save();
+        User::create($request->all());
 
         return response()->json(['message' => 'Successfully registration!']);
     }

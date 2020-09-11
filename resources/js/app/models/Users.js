@@ -30,7 +30,7 @@ export default class User {
         return this
     }
 
-    validatePasswordConfirmationm() {
+    validatePasswordConfirmation() {
         if (this.form.password !== this.form.password_confirmation) {
             this.errors.password_confirmation = "Wrong password"
         }
